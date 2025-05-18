@@ -9,13 +9,13 @@ import tensorflow as tf
 import numpy as np
 
 app = Flask(__name__)
-UPLOAD_DIR = "/tmp/reports"
-TEMP_DIR = "/tmp/temp"
+UPLOAD_DIR = "reports"
+TEMP_DIR = "temp"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 # ====================== #
-# 🔹 Load model + encoder
+#  Load model + encoder
 # ====================== #
 model = tf.keras.models.load_model("bug_severity_vector_model.keras")
 
@@ -142,6 +142,16 @@ def generate_bug_doc():
     except Exception as e:
         print(" Word File Error:", e)
         return jsonify({"error": str(e)}), 500
+    
+# ==================== #
+#  Serve Reports Online
+# ==================== #
+from flask import send_from_directory
+
+# Serve Word files from /tmp/reports via URL
+@app.route("/reports/<path:filename>", methods=["GET"])
+def download_report(filename):
+    return send_from_directory(UPLOAD_DIR, filename)
 
 # ==================== #
 # Start Flask App
