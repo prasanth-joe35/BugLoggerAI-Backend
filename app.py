@@ -9,7 +9,7 @@ import tensorflow as tf
 import numpy as np
 
 app = Flask(__name__)
-UPLOAD_DIR = "reports"
+UPLOAD_DIR = "/tmp/reports"
 TEMP_DIR = "temp"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
